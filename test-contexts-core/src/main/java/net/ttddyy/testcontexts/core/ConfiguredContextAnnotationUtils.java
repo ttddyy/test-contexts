@@ -22,7 +22,7 @@ public class ConfiguredContextAnnotationUtils {
         return result;
     }
 
-    public static List<Method> getAnnotatedMethods(Class<?> configuredClass) {
+    private static List<Method> getAnnotatedMethods(Class<?> configuredClass) {
 
         final List<Method> annotatedMethods = new ArrayList<Method>();
 
@@ -43,16 +43,4 @@ public class ConfiguredContextAnnotationUtils {
         return AnnotationUtils.findAnnotation(method, ConfiguredContext.class);
     }
 
-    public static List<ConfiguredContext> getTestConfigs(Class<?> configuredClass) {
-
-        final List<ConfiguredContext> configuredContexts = new ArrayList<ConfiguredContext>();
-
-        final List<Method> annotatedMethods = getAnnotatedMethods(configuredClass);
-        for (Method method : annotatedMethods) {
-            final ConfiguredContext context = AnnotationUtils.findAnnotation(method, ConfiguredContext.class);
-            configuredContexts.add(context);
-        }
-
-        return configuredContexts;
-    }
 }
