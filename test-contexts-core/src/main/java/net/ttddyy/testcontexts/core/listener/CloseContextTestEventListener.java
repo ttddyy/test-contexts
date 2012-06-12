@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 /**
  * @author Tadaya Tsuyukubo
  */
-public class CloseTestEventListener implements ApplicationListener<TestLifecycleEvent> {
+public class CloseContextTestEventListener implements ApplicationListener<TestLifecycleEvent> {
 
     // TODO: close the app context
     // different from refresh(dirty) listener

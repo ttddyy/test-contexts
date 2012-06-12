@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.ReflectionUtils;
 
@@ -26,7 +25,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     private boolean isConfiguredContextsInitialized = false;
 
-    private ApplicationContext rootApplicationContext;
+    private ApplicationContext frameworkApplicationContext;
 
     /**
      * reference to the root ApplicationContext which contains TestManager itself.
@@ -35,7 +34,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
      * @throws BeansException
      */
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.rootApplicationContext = applicationContext;
+        this.frameworkApplicationContext = applicationContext;
     }
 
     public boolean isConfiguredContextsInitialized() {
@@ -67,16 +66,16 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
         // resolve parent context
         final String parentContextName = definition.getParentContextName();
-        final ApplicationContext parentContext = getResolveParentApplicationContext(parentContextName);
+        final ApplicationContext parentContext = getResolvedParentApplicationContext(parentContextName);
 
         return ConfiguredContextUtils.createConfiguredContext(definition, parentContext);
     }
 
-    private ApplicationContext getResolveParentApplicationContext(String parentContextName) {
+    private ApplicationContext getResolvedParentApplicationContext(String parentContextName) {
         final ApplicationContext parentContext;
         if (parentContextName == null) {
             // when configuration has null parent, set the root application context.
-            parentContext = rootApplicationContext;
+            parentContext = frameworkApplicationContext;
         } else {
             parentContext = configuredContextMap.get(parentContextName);
         }
@@ -123,7 +122,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
         // parent context
         final TestConfig testConfig = RuntimeContextUtils.getTestConfigAnnotation(testInstance);
         final String parentContextName = testConfig.context();
-        final ApplicationContext parentContext = getResolveParentApplicationContext(parentContextName);
+        final ApplicationContext parentContext = getResolvedParentApplicationContext(parentContextName);
 
         return RuntimeContextUtils.createRuntimeContext(testInstance, parentContext);
 

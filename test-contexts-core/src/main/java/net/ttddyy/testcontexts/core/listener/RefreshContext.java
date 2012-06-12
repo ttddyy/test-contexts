@@ -1,9 +1,14 @@
-package net.ttddyy.testcontexts.core;
+package net.ttddyy.testcontexts.core.listener;
 
 import java.lang.annotation.*;
 
 /**
+ * After execution of annotated class/method, specified context will be re-created.
+ * <p/>
+ * similar to @DirtiesContext in spring, but also you can specify which contexts to be refreshed.
+ *
  * @author Tadaya Tsuyukubo
+ * @see net.ttddyy.testcontexts.core.listener.RefreshContextTestEventListener
  */
 @Documented
 @Inherited

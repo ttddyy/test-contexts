@@ -44,12 +44,20 @@ public class RuntimeContextUtils {
             }
         }
 
+        // create context meta info
+        final TestContextMetaInfo metaInfo = new TestContextMetaInfo();
+        metaInfo.setContextType(ContextType.RUNTIME);
+
         // create runtime application context
         final GenericApplicationContext applicationContext = new GenericApplicationContext();
+        final AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
         applicationContext.setParent(parentContext);
 
         // test class may be using annotation. so register annotation processors
         AnnotationConfigUtils.registerAnnotationConfigProcessors(applicationContext);
+
+        // register meta info
+        ((ConfigurableListableBeanFactory) beanFactory).registerSingleton(TestManager.METAINFO_BEAN_NAME, metaInfo);
 
         // register test-context-listeners
         for (BeanDefinition listenerBeanDefinition : listenerBeanDefinitions) {
@@ -60,7 +68,6 @@ public class RuntimeContextUtils {
         applicationContext.registerShutdownHook();
 
         // autowire dependencies, call callbacks for initialize, then register testbean as a singleton bean
-        final AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
         beanFactory.autowireBeanProperties(testInstance, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
         beanFactory.initializeBean(testInstance, TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME);
         ((ConfigurableListableBeanFactory) beanFactory).registerSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME, testInstance);
