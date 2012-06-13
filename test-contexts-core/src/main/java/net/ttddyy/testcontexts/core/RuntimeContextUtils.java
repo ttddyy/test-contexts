@@ -64,13 +64,16 @@ public class RuntimeContextUtils {
             final String beanName = BeanDefinitionReaderUtils.generateBeanName(listenerBeanDefinition, applicationContext);
             applicationContext.registerBeanDefinition(beanName, listenerBeanDefinition);
         }
+
+        // register the test instance
+        ((ConfigurableListableBeanFactory) beanFactory).registerSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME, testInstance);
+
         applicationContext.refresh();
         applicationContext.registerShutdownHook();
 
-        // autowire dependencies, call callbacks for initialize, then register testbean as a singleton bean
+        // autowire dependencies, call callbacks for initialize
         beanFactory.autowireBeanProperties(testInstance, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
         beanFactory.initializeBean(testInstance, TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME);
-        ((ConfigurableListableBeanFactory) beanFactory).registerSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME, testInstance);
 
         return applicationContext;
     }
