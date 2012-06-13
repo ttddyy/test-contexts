@@ -75,10 +75,13 @@ public class RefreshContextTestEventListener extends TestLifecycleEventListenerA
 
     private void refreshRuntimeContext(ApplicationContext runtimeContext) {
 
+        // retrieve test instance before closing(close clears all registered beans).
+        final Object testInstance = RuntimeContextUtils.getTestInstance(runtimeContext);
         if (runtimeContext instanceof ConfigurableApplicationContext) {
             ((ConfigurableApplicationContext) runtimeContext).close();
         }
-        final Object testInstance = RuntimeContextUtils.getTestInstance(runtimeContext);
+
+        // re-create new runtime instance
         testManager.createRuntimeContext(testInstance);
 
     }
