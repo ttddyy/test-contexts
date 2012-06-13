@@ -169,7 +169,8 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
         // get contexts include all children
         final Set<ApplicationContext> configuredContexts = new HashSet<ApplicationContext>();
         for (String contextName : contextNames) {
-            configuredContexts.addAll(getAllChildConfiguredContexts(contextName));
+            configuredContexts.add(getConfiguredContext(contextName)); // itself
+            configuredContexts.addAll(getAllChildConfiguredContexts(contextName)); //children
         }
 
         // parent context comes first
