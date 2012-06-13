@@ -14,6 +14,11 @@ import java.util.List;
  */
 public class ConfiguredContextAnnotationUtils {
 
+    /**
+     * Retrieve methods annotated with @ConfiguredContext from given classes.
+     * @param configuredClasses classes to retrieve from
+     * @return list of @ConfiguredContext annotated methods
+     */
     public static List<Method> getAnnotatedMethods(Class<?>... configuredClasses) {
         final List<Method> result = new ArrayList<Method>();
         for (Class<?> configuredClass : configuredClasses) {
@@ -39,6 +44,11 @@ public class ConfiguredContextAnnotationUtils {
         return annotatedMethods;
     }
 
+    /**
+     * retrieve @ConfiguredContext annotation from the given method object.
+     * @param method a method to search the annotation
+     * @return an instance of @ConfiguredContext
+     */
     public static ConfiguredContext getTestConfig(Method method) {
         return AnnotationUtils.findAnnotation(method, ConfiguredContext.class);
     }

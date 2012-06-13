@@ -1,5 +1,7 @@
 package net.ttddyy.testcontexts.core;
 
+import net.ttddyy.testcontexts.core.listener.CloseContextTestEventListener;
+import net.ttddyy.testcontexts.core.listener.RefreshContextTestEventListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,7 @@ public class TestManagerBootStrap {
 
     public void createRootContext() {
         final AnnotationConfigApplicationContext applicationContext =
-                new AnnotationConfigApplicationContext(RootTestContextConfiguration.class);
+                new AnnotationConfigApplicationContext(FrameworkContextConfiguration.class);
         applicationContext.setDisplayName(ROOT_CONTEXT_NAME);
 
         final TestManager testManager = applicationContext.getBean(TestManager.class);
@@ -21,10 +23,10 @@ public class TestManagerBootStrap {
     }
 
     /**
-     * Root application context definition.
+     * Framework Context(Root) application context definition.
      */
     @Configuration
-    public static class RootTestContextConfiguration {
+    public static class FrameworkContextConfiguration {
 
         @Bean
         public TestManager testManager() {
@@ -37,6 +39,16 @@ public class TestManagerBootStrap {
             meta.setContextType(ContextType.FRAMEWORK);
             // TODO: definition for root??
             return meta;
+        }
+
+        @Bean
+        public CloseContextTestEventListener closeContextTestEventListener(){
+            return new CloseContextTestEventListener();
+        }
+
+        @Bean
+        public RefreshContextTestEventListener refreshContextTestEventListener(){
+            return new RefreshContextTestEventListener();
         }
     }
 }
