@@ -5,11 +5,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
