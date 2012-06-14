@@ -9,6 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     private boolean isConfiguredContextsInitialized = false;
 
-    private ApplicationContext frameworkApplicationContext;
+    private ApplicationContext frameworkContext;
 
     /**
      * reference to the root ApplicationContext which contains TestManager itself.
@@ -34,7 +35,11 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
      * @throws BeansException
      */
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.frameworkApplicationContext = applicationContext;
+        this.frameworkContext = applicationContext;
+    }
+
+    public ApplicationContext getFrameworkContext() {
+        return frameworkContext;
     }
 
     public boolean isConfiguredContextsInitialized() {
@@ -73,11 +78,11 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     private ApplicationContext getResolvedParentApplicationContext(String parentContextName) {
         final ApplicationContext parentContext;
-        if (parentContextName == null) {
-            // when configuration has null parent, set the root application context.
-            parentContext = frameworkApplicationContext;
-        } else {
+        if (StringUtils.hasText(parentContextName)) {
             parentContext = configuredContextMap.get(parentContextName);
+        } else {
+            // when configuration has null parent, set the root application context.
+            parentContext = frameworkContext;
         }
         return parentContext;
     }

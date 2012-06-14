@@ -13,6 +13,8 @@ public interface TestManager {
     static final String METAINFO_BEAN_NAME = "testContextsMetaInfo";
     static final String RUNTIME_CONTEXT_TESTBEAN_NAME = "runtime_testbean";
 
+    ApplicationContext getFrameworkContext();
+
     boolean isConfiguredContextsInitialized();
 
     void prepareConfiguredContext(Class<?>[] configuredClasses);
