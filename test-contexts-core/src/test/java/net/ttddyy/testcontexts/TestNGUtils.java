@@ -24,6 +24,7 @@ public class TestNGUtils {
             throw new AssertionError("no test class specified.");
         }
 
+        // run testng tests
         TestListenerAdapter tla = new TestListenerAdapter();
         TestNG testNG = new TestNG();
         testNG.setTestClasses(testClasses);
@@ -34,10 +35,13 @@ public class TestNGUtils {
         failedTests.addAll(tla.getFailedTests());
         failedTests.addAll(tla.getConfigurationFailures());
         if (!failedTests.isEmpty()) {
+
+            String header = String.format("Combined Messages (Total:%d)", failedTests.size());
+
             List<String> errorMessages = Lists.newArrayList();
+            errorMessages.add(header);
             errorMessages.addAll(Lists.transform(failedTests, new Function<ITestResult, String>() {
                 int i = 1;
-
                 @Override
                 public String apply(ITestResult testResult) {
                     String stackTraceString = Throwables.getStackTraceAsString(testResult.getThrowable());
@@ -46,11 +50,8 @@ public class TestNGUtils {
                 }
             }));
 
-            String header = String.format("Combined Messages (Total:%d)", errorMessages.size());
-            errorMessages.add(0, header);
-
+            // transform messages to a single combined string
             String message = Joiner.on(LINE_SEPARATOR).join(errorMessages);
-
             throw new AssertionError(message);
         }
     }
