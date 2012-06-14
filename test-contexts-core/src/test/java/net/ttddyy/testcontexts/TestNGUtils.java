@@ -30,7 +30,9 @@ public class TestNGUtils {
         testNG.addListener(tla);
         testNG.run();
 
-        List<ITestResult> failedTests = tla.getFailedTests();
+        List<ITestResult> failedTests = Lists.newArrayList();
+        failedTests.addAll(tla.getFailedTests());
+        failedTests.addAll(tla.getConfigurationFailures());
         if (!failedTests.isEmpty()) {
             List<String> errorMessages = Lists.newArrayList();
             errorMessages.addAll(Lists.transform(failedTests, new Function<ITestResult, String>() {
