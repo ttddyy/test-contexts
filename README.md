@@ -2,47 +2,72 @@
 
 ## About
 
-Test Contexts is a framework that integrates spring-framework and test frameworks, junit and testng.
+Test Contexts is a framework that integrates spring-framework and test frameworks(junit and testng).
 
-- each test class run inside of application contexts
-- test will have a specified parent application context
-- parent application contexts can have hierarchy
+- each test class runs inside of application contexts
+- each test class can specify a parent application context
+- parent application contexts are hierarchical
 - simple annotation to specify parent application context in test
-- annotation based central configuration file for application contexts
+- annotation based central configuration classes for application contexts
 
 
-### Each test class run inside of application contexts
+### Each test class runs inside of application contexts
 This allows tests to take advantage of ApplicationContext features, such as dependency injection, application context events, environment profiles, etc.
 
-### test will have a specified parent application context
-As stated above, each test runs inside of application context(runtime-context). This means the runtime-context can have a parent application context(configured context).
-Configured context is specified by an annotation on test class. For example, dao layer tests can have a configured context that defines database related beans, and service layer beans may have a configured context that defines mock related beans. In test classes, those beans specified in configured contexts will be injected to  the test class instances.
+### Each test class can specify a parent application context
+As stated above, each test runs inside of application context(runtime-context). This means the runtime-context can have a parent application context(configured-context).
+Configured-context is specified by an annotation(@TestConfig) on the test class.
 
-### parent application contexts can have hierarchy
+For example, dao layer tests can have a configured context that defines database related beans.
+Service layer beans may have a configured context that defines mock related beans.
+At runtime, test instance runs inside of a runtime-context which has a specified parent configured-context.
+So that all the beans defined in configured-context can be injected to the test instance.
 
-each context lifecycle can be different. For example, let's say you have a configured context foo and bar. foo is a parent of bar. After each test, you can refresh context bar because the test makes context-bar dirty.
-you can refresh configured context foo
+### Parent application contexts are hierarchical
+Configured-contexts can be hierarchical. This allows child context to override parent context defined beans.
 
-### simple annotation to specify parent application context in test
-In each test class, you can simply specify which configured context to use as parent by specifying string name in @TestConfig annotation.
 
-### annotation based central configuration file for application contexts
-configured context are defined as a java class with annotation.
+### Simple annotation to specify parent application context in test
+In each test class, @TestConfig annotation specifies which context(configured-context) to use as a prent context.
+
+
+### Annotation based central configuration classes for application contexts
+Similar to Spring JavaConfig, @ConfiguredContextDefinition annotated class is a central place to define all configured-contexts.
+@ConfiguredContextDefinition annotated class contains @ConfiguredContext annotated methods. Each method provides meta info for configured-contexts.
+
+
 example:
 
+````java
+    @ConfiguredContextDefinition
+    public class ConfiguredContexts {
+
+        @ConfiguredContext(name = "foo", locations = "applicationContext.xml")
+        public void contextFoo() {  // xml based appCtx
+        }
+        @ConfiguredContext(name = "bar", classes = AnnotationAppContext.class)
+        public void contextBar() {  // annotation based appCtx
+        }
+        @ConfiguredContext(name = "baz")
+        public ApplicationContext contextBaz() {
+            return new MyApplicationContext();  // custom appCtx
+        }
+    }
+````
 
 
 ## Difference from Spring TestContext Framework
 
 **more visibility**
 
-In Test Contexts, all framework related classes are exposed as beans in framework context.
+In Test Contexts, all framework related classes are exposed as beans in framework-context.
 You can inject/retrieve them, call methods, or override any beans easily.
 
 
 **ApplicationContext hierarchy**
 
 Test Contexts supports parent application contexts.
+
 As of spring 3.1, hierarchical application context are not yet supported in spring-tcf.
 
 
@@ -53,7 +78,7 @@ This allows tests to take advantage of ApplicationContext features, such as depe
 
 **Single place to look at test application contexts definitions**
 
-Similar to JavaConfig, application contexts used by test(Configured Context) are defined in a java class.
+Similar to JavaConfig, application contexts used by test(configured-context) are defined in a java class(@ConfiguredContextDefinition).
 So, it is easy to look up the configuration.
 
 
@@ -62,21 +87,17 @@ So, it is easy to look up the configuration.
 
 ````java
 
-    // Configured Context(ApplicationContext) definition
-    @ConfiguredContextDefinition
+    @ConfiguredContextDefinition   //  Configured-Context(ApplicationContext) definition
     public class MyTestContexts {
 
-        // use annotation class to create application context
-        @ConfiguredContext(
+        @ConfiguredContext(        // use annotation class to create an application context
             name = "contextFoo",
             classes = ConfigFoo.class
         )
         public void configFoo() {
         }
 
-        // use xml file to create application context
-
-        @ConfiguredContext(
+        @ConfiguredContext(        // use xml file to create application context
             name = "contextBar",
             locations = "bar-context.xml",
             parent = "contextFoo"  // child of contextFoo
@@ -91,8 +112,7 @@ So, it is easy to look up the configuration.
     public abstract class TestBase extends AbstractTestNGSupport {
 
         static {
-            // specify test contexts class
-            configClasses.add(MyTestContexts.class);
+            configClasses.add(MyTestContexts.class);  // specify test contexts class
         }
         ....
     }
@@ -112,16 +132,20 @@ So, it is easy to look up the configuration.
 
 # Architecture
 
-[Application Contexts](https://docs.google.com/drawings/d/1kLSdwxMUdfcYO4qqBYGAZTukQ6sGjmySGihZNnHAuqE/edit)
+![Application Contexts](https://docs.google.com/drawings/d/1kLSdwxMUdfcYO4qqBYGAZTukQ6sGjmySGihZNnHAuqE/edit)
 
 ## Framework Context
-Framework creates this context. This is the root context of all other application context.
-The context is created at the startup time and defines framework related beans, such as TestManager bean.
+
+Test Contexts creates this context.
+
+This is the root context of all other application contexts.
+The framework-context is created at the startup time and defines framework related beans, such as TestManager bean, basic listeners, etc.
 
 
 ## Configured Context
 
 User defined application contexts.
+
 User can define multiple application contexts for test with parent-child hierarchy. Configured Contexts are specified as java methods in the class with @TestContextDefinition annotation.
 
 
