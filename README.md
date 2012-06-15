@@ -132,7 +132,7 @@ So, it is easy to look up the configuration.
 
 # Architecture
 
-![Application Contexts](https://docs.google.com/drawings/d/1kLSdwxMUdfcYO4qqBYGAZTukQ6sGjmySGihZNnHAuqE/edit)
+![Application Contexts](https://docs.google.com/drawings/pub?id=1kLSdwxMUdfcYO4qqBYGAZTukQ6sGjmySGihZNnHAuqE&w=960&h=720)
 
 ## Framework Context
 
