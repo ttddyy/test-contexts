@@ -83,6 +83,7 @@ public class RuntimeContextUtilsTests {
 
         assertThat(context, notNullValue());
         assertThat(context.getParent(), nullValue());
+        assertThat(context.getDisplayName(), is("RuntimeContext-java.lang.Object"));
 
         assertThat(context.containsBean(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME), is(true));
         Object bean = context.getBean(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME);

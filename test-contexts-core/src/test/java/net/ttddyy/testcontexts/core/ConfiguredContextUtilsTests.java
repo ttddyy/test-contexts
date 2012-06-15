@@ -48,6 +48,7 @@ public class ConfiguredContextUtilsTests {
 
         assertThat(context, is(notNullValue()));
         assertThat(context.getParent(), is(sameInstance((ApplicationContext) parentContext)));
+        assertThat(context.getDisplayName(), is("ConfiguredContext-foo"));
         assertThat(context.containsBean("foo"), is(true));
         assertThat(context.getBean("foo"), instanceOf(String.class));
         assertThat((String) context.getBean("foo"), is("FOO"));
@@ -86,6 +87,7 @@ public class ConfiguredContextUtilsTests {
 
         assertThat(context, is(notNullValue()));
         assertThat(context.getParent(), is(sameInstance((ApplicationContext) parentContext)));
+        assertThat(context.getDisplayName(), is("custom-context"));
         assertThat(context.containsBean("foo"), is(true));
         assertThat(context.getBean("foo"), instanceOf(String.class));
         assertThat((String) context.getBean("foo"), is("FOO"));
@@ -102,6 +104,7 @@ public class ConfiguredContextUtilsTests {
     public ApplicationContext createContextByMethod(ApplicationContext parentContext) {
         GenericApplicationContext context = new GenericApplicationContext();
         context.setParent(parentContext);
+        context.setDisplayName("custom-context");
         new AnnotatedBeanDefinitionReader(context).register(DummyConfig.class);
         context.refresh();
         return context;
