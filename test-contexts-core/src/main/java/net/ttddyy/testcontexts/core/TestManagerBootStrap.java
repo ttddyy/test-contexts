@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
  */
 public class TestManagerBootStrap {
 
-    private static final String ROOT_CONTEXT_NAME = "ROOT_TEST_CONTEXT";
+    private static final String FRAMEWORK_CONTEXT_NAME = "FrameworkContext";
 
     public void createRootContext() {
         final AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(FrameworkContextConfiguration.class);
-        applicationContext.setDisplayName(ROOT_CONTEXT_NAME);
+        applicationContext.setDisplayName(FRAMEWORK_CONTEXT_NAME);
 
         final TestManager testManager = applicationContext.getBean(TestManager.class);
         TestManagerHolder.set(testManager);

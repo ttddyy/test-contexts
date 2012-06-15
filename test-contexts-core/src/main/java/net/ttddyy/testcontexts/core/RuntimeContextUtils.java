@@ -48,10 +48,14 @@ public class RuntimeContextUtils {
         final TestContextMetaInfo metaInfo = new TestContextMetaInfo();
         metaInfo.setContextType(ContextType.RUNTIME);
 
+        // application context display name
+        final String displayName = "RuntimeContext-" + testInstance.getClass().getName();
+
         // create runtime application context
         final GenericApplicationContext applicationContext = new GenericApplicationContext();
         final AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
         applicationContext.setParent(parentContext);
+        applicationContext.setDisplayName(displayName);
 
         // test class may be using annotation. so register annotation processors
         AnnotationConfigUtils.registerAnnotationConfigProcessors(applicationContext);

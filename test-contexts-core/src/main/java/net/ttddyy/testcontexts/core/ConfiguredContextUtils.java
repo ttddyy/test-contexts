@@ -10,14 +10,13 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Utils for ConfiguredContext application context instance.
@@ -93,6 +92,17 @@ public class ConfiguredContextUtils {
             }
         }
 
+        // when context has empty display name
+        if (context instanceof AbstractApplicationContext && !StringUtils.hasLength(context.getDisplayName())) {
+            final String displayName;
+            if (StringUtils.hasText(definition.getContextName())) {
+                displayName = "ConfiguredContext-" + definition.getContextName();
+            } else {
+                displayName = "ConfiguredContext-" + method.getName();
+            }
+            ((AbstractApplicationContext) context).setDisplayName(displayName);
+        }
+
         return context;
 
     }
@@ -107,7 +117,7 @@ public class ConfiguredContextUtils {
     private static ApplicationContext createConfiguredContextFromAnnotation(ParsedConfiguredContextDefinition definition, ApplicationContext parent) {
 
         final GenericApplicationContext context = new GenericApplicationContext();
-        context.setDisplayName(definition.getContextName());
+        context.setDisplayName("ConfiguredContext-" + definition.getContextName());
         context.setParent(parent);
 
         // profile
