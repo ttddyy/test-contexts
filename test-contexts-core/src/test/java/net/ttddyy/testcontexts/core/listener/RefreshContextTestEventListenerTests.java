@@ -39,7 +39,7 @@ public class RefreshContextTestEventListenerTests {
         when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTest()); // dummy test instance
+        status.setTestClass(DummyTest.class); // dummy test class
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_CLASS, status);
 
         RefreshContextTestEventListener listener = new RefreshContextTestEventListener();
@@ -76,7 +76,7 @@ public class RefreshContextTestEventListenerTests {
         when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTest()); // dummy test instance
+        status.setTestClass(DummyTest.class); // dummy test class
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_CLASS, status);
 
         RefreshContextTestEventListener listener = new RefreshContextTestEventListener();
@@ -119,7 +119,7 @@ public class RefreshContextTestEventListenerTests {
         when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTest()); // dummy test instance
+        status.setTestClass(DummyTest.class); // dummy test class
         status.setTestMethod(ReflectionUtils.findMethod(DummyTest.class, "test"));
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_METHOD, status);
 
@@ -160,7 +160,7 @@ public class RefreshContextTestEventListenerTests {
         when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTest()); // dummy test instance
+        status.setTestClass(DummyTest.class); // dummy test class
         status.setTestMethod(ReflectionUtils.findMethod(DummyTest.class, "test"));
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_METHOD, status);
 
@@ -201,7 +201,7 @@ public class RefreshContextTestEventListenerTests {
         when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTest()); // dummy test instance
+        status.setTestClass(DummyTest.class); // dummy test class
         status.setTestMethod(ReflectionUtils.findMethod(DummyTest.class, "test"));
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_METHOD, status);
 

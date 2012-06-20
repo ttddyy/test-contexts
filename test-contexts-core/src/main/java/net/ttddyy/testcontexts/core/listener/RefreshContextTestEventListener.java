@@ -20,7 +20,7 @@ public class RefreshContextTestEventListener extends TestLifecycleEventListenerA
     protected void onAfterMethod(TestLifecycleEvent event) {
         final ApplicationContext runtimeContext = event.getApplicationContext();
         final TestEventStatus eventStatus = event.getEventStatus();
-        final Class<?> testClass = eventStatus.getTestInstance().getClass();
+        final Class<?> testClass = eventStatus.getTestClass();
         final Method testMethod = eventStatus.getTestMethod();
 
         RefreshContext refreshContext = AnnotationUtils.findAnnotation(testMethod, RefreshContext.class);
@@ -43,7 +43,7 @@ public class RefreshContextTestEventListener extends TestLifecycleEventListenerA
     @Override
     protected void onAfterClass(TestLifecycleEvent event) {
         final ApplicationContext runtimeContext = event.getApplicationContext();
-        final Class<?> testClass = event.getEventStatus().getTestInstance().getClass();
+        final Class<?> testClass = event.getEventStatus().getTestClass();
 
         final RefreshContext refreshContext = AnnotationUtils.findAnnotation(testClass, RefreshContext.class);
 

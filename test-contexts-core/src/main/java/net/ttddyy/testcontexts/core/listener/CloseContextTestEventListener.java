@@ -22,7 +22,7 @@ public class CloseContextTestEventListener extends TestLifecycleEventListenerAda
     @Override
     protected void onAfterClass(TestLifecycleEvent event) {
         final ApplicationContext runtimeContext = event.getApplicationContext();
-        final Class<?> testClass = event.getEventStatus().getTestInstance().getClass();
+        final Class<?> testClass = event.getEventStatus().getTestClass();
 
         final CloseContext closeContext = AnnotationUtils.findAnnotation(testClass, CloseContext.class);
         if (closeContext == null) {

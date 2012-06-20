@@ -34,7 +34,7 @@ public class CloseContextTestEventListenerTests {
         assertThat("make sure context is active at first", context.isActive(), is(true));
 
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTest()); // dummy test instance
+        status.setTestClass(DummyTest.class); // dummy test class
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_CLASS, status);
         listener.onAfterClass(event);
 
@@ -68,7 +68,7 @@ public class CloseContextTestEventListenerTests {
 
         // event
         TestEventStatus status = new TestEventStatus();
-        status.setTestInstance(new DummyTestWithContextNames()); // dummy test instance
+        status.setTestClass(DummyTestWithContextNames.class); // dummy test class
         TestLifecycleEvent event = new TestLifecycleEvent(context, TestLifecycleEventType.AFTER_CLASS, status);
 
         // invocation

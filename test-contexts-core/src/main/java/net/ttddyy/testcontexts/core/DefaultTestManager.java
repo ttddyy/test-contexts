@@ -20,6 +20,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     // essentially this is the cache to hold application contexts by context-name
     private Map<String, ApplicationContext> configuredContextMap = new HashMap<String, ApplicationContext>();
+    private Map<Object, ApplicationContext> runtimeContextMap = new HashMap<Object, ApplicationContext>();
 
     private ConfiguredContextDefinitionValidator definitionValidator = new ConfiguredContextDefinitionValidator();
     private ConfiguredContextDefinitionParser definitionParser = new ConfiguredContextDefinitionParser();
@@ -122,15 +123,30 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
     }
 
     public ApplicationContext createRuntimeContext(Object testInstance) {
-        // TODO: need to manage runtime contexts?? caching??
 
         // parent context
         final TestConfig testConfig = RuntimeContextUtils.getTestConfigAnnotation(testInstance);
         final String parentContextName = testConfig.context();
         final ApplicationContext parentContext = getResolvedParentApplicationContext(parentContextName);
 
-        return RuntimeContextUtils.createRuntimeContext(testInstance, parentContext);
+        final ApplicationContext runtimeContext = RuntimeContextUtils.createRuntimeContext(testInstance, parentContext);
 
+        runtimeContextMap.put(testInstance, runtimeContext);
+
+        return runtimeContext;
+
+    }
+
+    public ApplicationContext createOrGetRuntimeContext(Object testInstance) {
+        final ApplicationContext applicationContext = getRuntimeContext(testInstance);
+        if (applicationContext != null) {
+            return applicationContext;
+        }
+        return createRuntimeContext(testInstance);
+    }
+
+    public ApplicationContext getRuntimeContext(Object testInstance) {
+        return runtimeContextMap.get(testInstance);
     }
 
 

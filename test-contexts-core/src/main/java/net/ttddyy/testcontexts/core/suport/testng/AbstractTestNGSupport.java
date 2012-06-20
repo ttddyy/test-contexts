@@ -78,7 +78,7 @@ public class AbstractTestNGSupport implements ApplicationContextAware {
 
     private void publishEvent(Method testMethod, TestLifecycleEventType eventType) {
         TestEventStatus eventStatus = new TestEventStatus();
-        eventStatus.setTestInstance(this);
+        eventStatus.setTestClass(this.getClass());
         eventStatus.setTestMethod(testMethod);
 
         final TestLifecycleEvent event = new TestLifecycleEvent(applicationContext, eventType, eventStatus);

@@ -9,15 +9,24 @@ import java.lang.reflect.Method;
  */
 public class TestEventStatus {
 
-    private Object testInstance;
+    private Class<?> testClass;
     private Method testMethod;
 
-    public Object getTestInstance() {
-        return testInstance;
+
+    public TestEventStatus() {
     }
 
-    public void setTestInstance(Object testInstance) {
-        this.testInstance = testInstance;
+    public TestEventStatus(Class<?> testClass, Method testMethod) {
+        this.testClass = testClass;
+        this.testMethod = testMethod;
+    }
+
+    public Class<?> getTestClass() {
+        return testClass;
+    }
+
+    public void setTestClass(Class<?> testClass) {
+        this.testClass = testClass;
     }
 
     public Method getTestMethod() {

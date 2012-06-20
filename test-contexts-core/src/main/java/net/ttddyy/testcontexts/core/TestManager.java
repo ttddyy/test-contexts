@@ -25,6 +25,10 @@ public interface TestManager {
 
     ApplicationContext createRuntimeContext(Object testInstance);
 
+    ApplicationContext getRuntimeContext(Object testInstance);
+
+    ApplicationContext createOrGetRuntimeContext(Object testInstance);
+
     Set<ApplicationContext> getChildConfiguredContexts(String contextName);
 
     void refreshConfiguredContexts(String... contextNames);
