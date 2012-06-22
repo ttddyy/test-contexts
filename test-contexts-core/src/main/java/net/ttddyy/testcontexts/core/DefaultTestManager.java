@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -25,7 +26,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
     private ConfiguredContextDefinitionValidator definitionValidator = new ConfiguredContextDefinitionValidator();
     private ConfiguredContextDefinitionParser definitionParser = new ConfiguredContextDefinitionParser();
 
-    private boolean isConfiguredContextsInitialized = false;
+    private Class<?>[] contextDefinitions;
 
     private ApplicationContext frameworkContext;
 
@@ -44,17 +45,33 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
     }
 
     public boolean isConfiguredContextsInitialized() {
-        return isConfiguredContextsInitialized;
+        return !ObjectUtils.isEmpty(contextDefinitions);
     }
 
-    public void prepareConfiguredContext(Class<?>... configuredContextDefinitions) {
+    public synchronized void prepareConfiguredContext(Class<?>... configuredContextDefinitions) {
 
-        this.isConfiguredContextsInitialized = true;
+        // already initialized, then check
+        if (!ObjectUtils.isEmpty(contextDefinitions)) {
+            final Set<Class> existing = new HashSet<Class>(Arrays.asList(contextDefinitions));
+            final Set<Class> newDefs = new HashSet<Class>(Arrays.asList(configuredContextDefinitions));
+
+            final boolean isSame = ((existing.size() == newDefs.size()) && existing.containsAll(newDefs));
+            if (!isSame) {
+                final StringBuilder sb = new StringBuilder("[");
+                sb.append(StringUtils.collectionToCommaDelimitedString(existing));
+                sb.append("]");
+
+                throw new TestContextException("Configured Contexts are already initialized with classes=" + sb.toString());
+            }
+            return; // already initialized with same definition classes, do nothing
+        }
+
+        this.contextDefinitions = configuredContextDefinitions;
 
         // validate the configuration
-        definitionValidator.validate(configuredContextDefinitions);
+        definitionValidator.validate(contextDefinitions);
 
-        final List<ParsedConfiguredContextDefinition> sortedDefinitions = definitionParser.parse(configuredContextDefinitions);
+        final List<ParsedConfiguredContextDefinition> sortedDefinitions = definitionParser.parse(contextDefinitions);
 
         for (ParsedConfiguredContextDefinition definition : sortedDefinitions) {
 
