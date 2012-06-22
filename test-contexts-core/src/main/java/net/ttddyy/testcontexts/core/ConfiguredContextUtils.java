@@ -9,6 +9,7 @@ import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
@@ -142,5 +143,11 @@ public class ConfiguredContextUtils {
         context.refresh();
 
         return context;
+    }
+
+    public static void close(ApplicationContext configuredContext) {
+        if (configuredContext != null && configuredContext instanceof ConfigurableApplicationContext) {
+            ((ConfigurableApplicationContext) configuredContext).close();
+        }
     }
 }

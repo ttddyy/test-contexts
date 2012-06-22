@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -80,6 +81,12 @@ public class RuntimeContextUtils {
         beanFactory.initializeBean(testInstance, TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME);
 
         return applicationContext;
+    }
+
+    public static void close(ApplicationContext runtimeContext) {
+        if (runtimeContext != null && runtimeContext instanceof ConfigurableApplicationContext) {
+            ((ConfigurableApplicationContext) runtimeContext).close();
+        }
     }
 
 }

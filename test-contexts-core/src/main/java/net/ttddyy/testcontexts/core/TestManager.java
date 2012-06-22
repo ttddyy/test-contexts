@@ -33,4 +33,6 @@ public interface TestManager {
 
     void refreshConfiguredContexts(String... contextNames);
 
+    void clear();
+
 }

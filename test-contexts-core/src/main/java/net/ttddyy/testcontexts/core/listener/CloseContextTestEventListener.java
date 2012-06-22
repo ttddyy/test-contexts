@@ -1,8 +1,6 @@
 package net.ttddyy.testcontexts.core.listener;
 
-import net.ttddyy.testcontexts.core.TestLifecycleEvent;
-import net.ttddyy.testcontexts.core.TestLifecycleEventListenerAdapter;
-import net.ttddyy.testcontexts.core.TestManager;
+import net.ttddyy.testcontexts.core.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -32,15 +30,11 @@ public class CloseContextTestEventListener extends TestLifecycleEventListenerAda
         // close specified configured contexts
         for (String contextName : closeContext.contexts()) {
             final ApplicationContext applicationContext = testManager.getConfiguredContext(contextName);
-            if (applicationContext != null && applicationContext instanceof ConfigurableApplicationContext) {
-                ((ConfigurableApplicationContext) applicationContext).close();
-            }
+            ConfiguredContextUtils.close(applicationContext);
         }
 
         // close runtime context
-        if (runtimeContext instanceof ConfigurableApplicationContext) {
-            ((ConfigurableApplicationContext) runtimeContext).close();
-        }
+        RuntimeContextUtils.close(runtimeContext);
 
     }
 

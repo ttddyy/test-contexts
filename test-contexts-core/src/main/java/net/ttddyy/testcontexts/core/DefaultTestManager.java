@@ -109,6 +109,22 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
         return configuredContextMap.get(contextName);
     }
 
+    public void clear() {
+
+        for (Map.Entry<Object, ApplicationContext> entry : runtimeContextMap.entrySet()) {
+            final ApplicationContext runtimeContext = entry.getValue();
+            RuntimeContextUtils.close(runtimeContext);
+        }
+
+        for (Map.Entry<String, ApplicationContext> entry : configuredContextMap.entrySet()) {
+            final ApplicationContext configuredContext = entry.getValue();
+            ConfiguredContextUtils.close(configuredContext);
+        }
+
+        runtimeContextMap.clear();
+        configuredContextMap.clear();
+
+    }
 
     public void findConfigurationClass() {
         ClassPathScanningCandidateComponentProvider scanner =
