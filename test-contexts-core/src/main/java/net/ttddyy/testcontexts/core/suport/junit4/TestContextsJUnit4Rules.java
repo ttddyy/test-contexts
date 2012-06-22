@@ -17,8 +17,6 @@ import java.lang.reflect.Method;
  */
 public class TestContextsJUnit4Rules {
 
-    // TODO: use RuleChain to combine initialize rule and class rule
-
     public static interface ContextDefinitionRetrievalStrategy {
         Class<?>[] getClasses();
     }

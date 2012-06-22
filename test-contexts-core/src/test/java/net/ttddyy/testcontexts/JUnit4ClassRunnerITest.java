@@ -8,7 +8,6 @@ import com.google.common.collect.Sets;
 import net.ttddyy.testcontexts.core.ConfiguredContext;
 import net.ttddyy.testcontexts.core.ConfiguredContextDefinition;
 import net.ttddyy.testcontexts.core.TestConfig;
-import net.ttddyy.testcontexts.core.TestManager;
 import net.ttddyy.testcontexts.core.suport.junit4.TestContextsJUnit4ClassRunner;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -18,7 +17,6 @@ import org.junit.runner.notification.Failure;
 import org.junit.runners.model.InitializationError;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.testng.ITestResult;
 
 import java.util.List;
 import java.util.Set;
@@ -69,7 +67,6 @@ public class JUnit4ClassRunnerITest {
 //        TestManager.CONFIG_CLASSES.clear();
 //        TestManager.CONFIG_CLASSES.add(ConfigClass.class);
 //    }
-
 
 
     public static class MyParentRunner extends TestContextsJUnit4ClassRunner {
