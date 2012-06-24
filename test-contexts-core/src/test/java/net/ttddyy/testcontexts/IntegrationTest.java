@@ -1,8 +1,6 @@
 package net.ttddyy.testcontexts;
 
-import net.ttddyy.testcontexts.core.ConfiguredContext;
-import net.ttddyy.testcontexts.core.ConfiguredContextDefinition;
-import net.ttddyy.testcontexts.core.TestConfig;
+import net.ttddyy.testcontexts.core.*;
 import net.ttddyy.testcontexts.core.listener.CloseContextTestEventListener;
 import net.ttddyy.testcontexts.core.suport.testng.AbstractTestNGSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class IntegrationTest extends AbstractTestNGSupport {
     public String bar;
 
     static {
-        configClasses.add(IntegrationTestConfig.class);
+//        configClasses.add(IntegrationTestConfig.class);
     }
 //    public IntegrationTest() {
 //        testManager = new DefaultTestManager();
@@ -40,6 +38,11 @@ public class IntegrationTest extends AbstractTestNGSupport {
 
     @Test
     public void test() {
+        TestManager contextManager = TestManagerHolder.get();
+        if (contextManager != null) {
+            contextManager.clear();
+        }
+
 //        assertEquals(foo, "FOO-BAR");
 //        assertEquals(bar, "BAR");
     }

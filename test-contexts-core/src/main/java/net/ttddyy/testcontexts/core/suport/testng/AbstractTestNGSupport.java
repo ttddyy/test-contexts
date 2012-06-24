@@ -4,6 +4,7 @@ import net.ttddyy.testcontexts.core.*;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
@@ -16,8 +17,6 @@ import java.util.Set;
 public class AbstractTestNGSupport implements ApplicationContextAware {
 
     // TODO: implement IHookable to trigger after exception thrown
-
-    protected static Set<Class<?>> configClasses = new LinkedHashSet<Class<?>>();
 
     protected TestManager testManager;
 
@@ -32,10 +31,15 @@ public class AbstractTestNGSupport implements ApplicationContextAware {
 
         // initialize configured contexts
         synchronized (AbstractTestNGSupport.class) {
-            testManager = TestManagerHolder.get();
-            if (!testManager.isConfiguredContextsInitialized()) {
-                testManager.prepareConfiguredContext(configClasses.toArray(new Class<?>[configClasses.size()]));
+
+            final SpecifyContextDefinitionClasses annotation =
+                    AnnotationUtils.findAnnotation(this.getClass(), SpecifyContextDefinitionClasses.class);
+            if (annotation == null) {
+                throw new TestContextException("@SpecifyContextDefinitionClasses is not annotated.");
             }
+
+            testManager = TestManagerHolder.get();
+            testManager.prepareConfiguredContext(annotation.classes());
         }
 
         // create app context for the test instance

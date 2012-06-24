@@ -1,8 +1,6 @@
 package net.ttddyy.testcontexts;
 
-import net.ttddyy.testcontexts.core.ConfiguredContext;
-import net.ttddyy.testcontexts.core.ConfiguredContextDefinition;
-import net.ttddyy.testcontexts.core.TestConfig;
+import net.ttddyy.testcontexts.core.*;
 import net.ttddyy.testcontexts.core.listener.CloseContext;
 import net.ttddyy.testcontexts.core.suport.testng.AbstractTestNGSupport;
 import org.junit.Test;
@@ -10,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.TestContextManager;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -21,17 +20,18 @@ public class CloseContextTestEventListenerITest {
 
     @Test
     public void testByTestNG() {
+        TestManager contextManager = TestManagerHolder.get();
+        if (contextManager != null) {
+            contextManager.clear();
+        }
+
         TestNGUtils.runAndVerify(CloseContextTestTestCase.class);
     }
 
     @TestConfig
     @CloseContext(contexts = {"foo", "bar"})
+    @SpecifyContextDefinitionClasses(classes = TestConfiguration.class)
     public static class CloseContextTestTestCase extends AbstractTestNGSupport {
-
-        static {
-            configClasses.clear();
-            configClasses.add(TestConfiguration.class);
-        }
 
         @org.testng.annotations.BeforeClass
         public void beforeClass() {

@@ -50,7 +50,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     public synchronized void prepareConfiguredContext(Class<?>... configuredContextDefinitions) {
 
-        // already initialized, then check
+        // if already initialized, then check using same definition-classes.
         if (!ObjectUtils.isEmpty(contextDefinitions)) {
             final Set<Class> existing = new HashSet<Class>(Arrays.asList(contextDefinitions));
             final Set<Class> newDefs = new HashSet<Class>(Arrays.asList(configuredContextDefinitions));

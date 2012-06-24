@@ -1,8 +1,6 @@
 package net.ttddyy.testcontexts;
 
-import net.ttddyy.testcontexts.core.ConfiguredContext;
-import net.ttddyy.testcontexts.core.ConfiguredContextDefinition;
-import net.ttddyy.testcontexts.core.TestConfig;
+import net.ttddyy.testcontexts.core.*;
 import net.ttddyy.testcontexts.core.listener.RefreshContext;
 import net.ttddyy.testcontexts.core.suport.testng.AbstractTestNGSupport;
 import org.junit.Test;
@@ -22,19 +20,26 @@ public class RefreshContextTestEventListenerITest {
 
     @Test
     public void testWithTestNG() {
+
+        clearContextManager();
         TestNGUtils.runAndVerify(RefreshContextWithClassAnnotationTestCase.class);
+
+        clearContextManager();
         TestNGUtils.runAndVerify(RefreshContextWithMethodAnnotationTestCase.class);
+    }
+
+    private void clearContextManager() {
+        TestManager contextManager = TestManagerHolder.get();
+        if (contextManager != null) {
+            contextManager.clear();
+        }
     }
 
 
     @TestConfig(context = "foo")
     @RefreshContext(contexts = "foo", classMode = RefreshContext.ClassMode.AFTER_EACH_TEST_METHOD)
+    @SpecifyContextDefinitionClasses(classes = TestConfiguration.class)
     public static class RefreshContextWithClassAnnotationTestCase extends AbstractTestNGSupport {
-
-        static {
-            configClasses.clear();
-            configClasses.add(TestConfiguration.class);
-        }
 
 
         @Resource
@@ -62,12 +67,8 @@ public class RefreshContextTestEventListenerITest {
     }
 
     @TestConfig(context = "foo")
+    @SpecifyContextDefinitionClasses(classes = TestConfiguration.class)
     public static class RefreshContextWithMethodAnnotationTestCase extends AbstractTestNGSupport {
-
-        static {
-            configClasses.clear();
-            configClasses.add(TestConfiguration.class);
-        }
 
 
         @Resource
