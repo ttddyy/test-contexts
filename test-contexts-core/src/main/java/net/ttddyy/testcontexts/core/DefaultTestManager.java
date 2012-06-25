@@ -109,7 +109,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
         return configuredContextMap.get(contextName);
     }
 
-    public void clear() {
+    public synchronized void clear() {
 
         for (Map.Entry<Object, ApplicationContext> entry : runtimeContextMap.entrySet()) {
             final ApplicationContext runtimeContext = entry.getValue();
@@ -123,6 +123,7 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
         runtimeContextMap.clear();
         configuredContextMap.clear();
+        contextDefinitions = new Class<?>[0];
 
     }
 
