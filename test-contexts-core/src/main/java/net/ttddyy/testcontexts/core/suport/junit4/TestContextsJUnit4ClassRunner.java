@@ -1,8 +1,10 @@
 package net.ttddyy.testcontexts.core.suport.junit4;
 
 import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
 
 import java.util.List;
 import java.util.Set;
@@ -25,7 +27,7 @@ public abstract class TestContextsJUnit4ClassRunner extends BlockJUnit4ClassRunn
 
         final TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy strategy = new TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy() {
             @Override
-            public Class<?>[] getClasses() {
+            public Class<?>[] getClasses(Statement base, Description description) {
                 final Set<Class<?>> classes = getConfigurationDefinitionClasses();
                 return classes.toArray(new Class<?>[classes.size()]);
             }

@@ -5,11 +5,12 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * Parent class for junit test classes.
- *
  *
  * @author Tadaya Tsuyukubo
  */
@@ -25,9 +26,10 @@ public abstract class AbstractJUnit4Support {
     static {
         final TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy strategy = new TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy() {
             @Override
-            public Class<?>[] getClasses() {
+            public Class<?>[] getClasses(Statement base, Description description) {
+
                 final SpecifyContextDefinitionClasses annotation =
-                        AnnotationUtils.findAnnotation(this.getClass(), SpecifyContextDefinitionClasses.class);
+                        AnnotationUtils.findAnnotation(description.getTestClass(), SpecifyContextDefinitionClasses.class);
                 return annotation.classes();
             }
         };

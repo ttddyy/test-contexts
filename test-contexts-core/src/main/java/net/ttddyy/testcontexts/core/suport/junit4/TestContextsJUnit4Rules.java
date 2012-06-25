@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 public class TestContextsJUnit4Rules {
 
     public static interface ContextDefinitionRetrievalStrategy {
-        Class<?>[] getClasses();
+        Class<?>[] getClasses(Statement base, Description description);
     }
 
     public static TestRule getInitializeRule(final ContextDefinitionRetrievalStrategy strategy) {
@@ -44,7 +44,7 @@ public class TestContextsJUnit4Rules {
 
                     // create configured contexts
                     if (!testManager.isConfiguredContextsInitialized()) {
-                        final Class<?>[] configClasses = strategy.getClasses();
+                        final Class<?>[] configClasses = strategy.getClasses(base, description);
                         testManager.prepareConfiguredContext(configClasses);
                     }
 
