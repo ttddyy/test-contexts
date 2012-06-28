@@ -43,7 +43,7 @@ public class AbstractTestNGSupport implements ApplicationContextAware {
         }
 
         // create app context for the test instance
-        testManager.createRuntimeContext(this);
+        testManager.createRuntimeContext(this, RuntimeContextMetaInfo.TestType.TESTNG);
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

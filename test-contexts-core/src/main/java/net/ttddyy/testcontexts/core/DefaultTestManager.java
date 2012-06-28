@@ -144,11 +144,11 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
     }
 
 
-    public void autoWire(String contextName, Object testInstance) {
+    public void autoWire(String contextName, Object testInstance, RuntimeContextMetaInfo.TestType testType) {
         // TODO: move to listener?
 
         // autowiring to test instance
-        ApplicationContext applicationContext = createRuntimeContext(contextName);
+        ApplicationContext applicationContext = createRuntimeContext(contextName, testType);
 
         AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
         beanFactory.autowireBeanProperties(testInstance, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
@@ -156,14 +156,14 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     }
 
-    public ApplicationContext createRuntimeContext(Object testInstance) {
+    public ApplicationContext createRuntimeContext(Object testInstance, RuntimeContextMetaInfo.TestType testType) {
 
         // parent context
         final TestConfig testConfig = RuntimeContextUtils.getTestConfigAnnotation(testInstance);
         final String parentContextName = testConfig.context();
         final ApplicationContext parentContext = getResolvedParentApplicationContext(parentContextName);
 
-        final ApplicationContext runtimeContext = RuntimeContextUtils.createRuntimeContext(testInstance, parentContext);
+        final ApplicationContext runtimeContext = RuntimeContextUtils.createRuntimeContext(testInstance, parentContext, testType);
 
         runtimeContextMap.put(testInstance, runtimeContext);
 
@@ -171,12 +171,12 @@ public class DefaultTestManager implements TestManager, ApplicationContextAware 
 
     }
 
-    public ApplicationContext createOrGetRuntimeContext(Object testInstance) {
+    public ApplicationContext createOrGetRuntimeContext(Object testInstance, RuntimeContextMetaInfo.TestType testType) {
         final ApplicationContext applicationContext = getRuntimeContext(testInstance);
         if (applicationContext != null) {
             return applicationContext;
         }
-        return createRuntimeContext(testInstance);
+        return createRuntimeContext(testInstance, testType);
     }
 
     public ApplicationContext getRuntimeContext(Object testInstance) {

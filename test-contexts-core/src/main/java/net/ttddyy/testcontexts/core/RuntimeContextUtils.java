@@ -31,7 +31,7 @@ public class RuntimeContextUtils {
         return AnnotationUtils.findAnnotation(testClass, TestConfig.class);
     }
 
-    public static ApplicationContext createRuntimeContext(Object testInstance, ApplicationContext parentContext) {
+    public static ApplicationContext createRuntimeContext(Object testInstance, ApplicationContext parentContext, RuntimeContextMetaInfo.TestType testType) {
 
         final List<BeanDefinition> listenerBeanDefinitions = new ArrayList<BeanDefinition>();
 
@@ -46,8 +46,8 @@ public class RuntimeContextUtils {
         }
 
         // create context meta info
-        final TestContextMetaInfo metaInfo = new TestContextMetaInfo();
-        metaInfo.setContextType(ContextType.RUNTIME);
+        final RuntimeContextMetaInfo metaInfo = new RuntimeContextMetaInfo();
+        metaInfo.setTestType(testType);
 
         // application context display name
         final String displayName = "RuntimeContext-" + testInstance.getClass().getName();

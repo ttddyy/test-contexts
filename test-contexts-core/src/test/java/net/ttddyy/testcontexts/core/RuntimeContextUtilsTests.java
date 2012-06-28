@@ -50,7 +50,7 @@ public class RuntimeContextUtilsTests {
 
         FakeTest fakeTest = new FakeTest();
 
-        ApplicationContext context = RuntimeContextUtils.createRuntimeContext(fakeTest, null);
+        ApplicationContext context = RuntimeContextUtils.createRuntimeContext(fakeTest, null, null);
 
         assertThat(context, notNullValue());
         assertThat(context.getParent(), nullValue());
@@ -79,7 +79,7 @@ public class RuntimeContextUtilsTests {
         // test instance is not annotated as @TestConfig
         Object testInstance = new Object();
 
-        ApplicationContext context = RuntimeContextUtils.createRuntimeContext(testInstance, null);
+        ApplicationContext context = RuntimeContextUtils.createRuntimeContext(testInstance, null, null);
 
         assertThat(context, notNullValue());
         assertThat(context.getParent(), nullValue());
@@ -107,7 +107,7 @@ public class RuntimeContextUtilsTests {
         AnnotationConfigApplicationContext parent = new AnnotationConfigApplicationContext(ParentContext.class);
         FakeTest fakeTest = new FakeTest();
 
-        RuntimeContextUtils.createRuntimeContext(fakeTest, parent);
+        RuntimeContextUtils.createRuntimeContext(fakeTest, parent, null);
 
         assertThat(fakeTest.foo, is("FOO"));
         assertThat(fakeTest.bar, is("BAR"));

@@ -100,7 +100,7 @@ public class TestContextsJUnit4Rules {
 
                 // junit creates test instance per test method, so here always creates a new runtime context
                 // TODO: close & clear runtime context when test finishes.
-                ApplicationContext runtimeContext = testManager.createOrGetRuntimeContext(testInstance);
+                ApplicationContext runtimeContext = testManager.createOrGetRuntimeContext(testInstance, RuntimeContextMetaInfo.TestType.JUNIT4);
 
                 publishEvent(description, TestLifecycleEventType.BEFORE_METHOD);
             }

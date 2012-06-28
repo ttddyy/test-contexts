@@ -21,13 +21,13 @@ public interface TestManager {
 
     ApplicationContext getConfiguredContext(String contextName);
 
-    void autoWire(String contextName, Object testInstance);
+    void autoWire(String contextName, Object testInstance, RuntimeContextMetaInfo.TestType testType);
 
-    ApplicationContext createRuntimeContext(Object testInstance);
+    ApplicationContext createRuntimeContext(Object testInstance, RuntimeContextMetaInfo.TestType testType);
 
     ApplicationContext getRuntimeContext(Object testInstance);
 
-    ApplicationContext createOrGetRuntimeContext(Object testInstance);
+    ApplicationContext createOrGetRuntimeContext(Object testInstance, RuntimeContextMetaInfo.TestType testType);
 
     Set<ApplicationContext> getChildConfiguredContexts(String contextName);
 
