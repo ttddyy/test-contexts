@@ -9,6 +9,7 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.sameInstance;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -24,16 +25,9 @@ public class RefreshContextTestEventListenerTests {
         }
 
         Object dummyTestInstance = new Object();
+        TestManager testManager = getMockTestManager(dummyTestInstance);
+        ConfigurableApplicationContext context = getMockContext(dummyTestInstance);
 
-        // prepare test manager
-        TestManager testManager = mock(TestManager.class);
-        ConfigurableApplicationContext mockRuntimeAppCtx = mock(ConfigurableApplicationContext.class);
-        when(testManager.createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class))).thenReturn(mockRuntimeAppCtx);
-
-        ConfigurableApplicationContext context = mock(ConfigurableApplicationContext.class);
-        ConfigurableListableBeanFactory beanFactory = mock(ConfigurableListableBeanFactory.class);
-        when(context.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
-        when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
         status.setTestClass(DummyTest.class); // dummy test class
@@ -50,7 +44,26 @@ public class RefreshContextTestEventListenerTests {
 
         // verify refresh logic for runtime-context is called
         verify(context).close();
-        verify(testManager).createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class));
+        verify(testManager).createRuntimeContext(eq(dummyTestInstance), any(RuntimeContextMetaInfo.TestType.class));
+    }
+
+    private TestManager getMockTestManager(Object dummyTestInstance) {
+        ConfigurableApplicationContext mockRuntimeAppCtx = mock(ConfigurableApplicationContext.class);
+        TestManager testManager = mock(TestManager.class);
+        when(testManager.createRuntimeContext(eq(dummyTestInstance), any(RuntimeContextMetaInfo.TestType.class))).thenReturn(mockRuntimeAppCtx);
+
+        return testManager;
+    }
+
+    private ConfigurableApplicationContext getMockContext(Object dummyTestInstance) {
+        RuntimeContextMetaInfo metaInfo = new RuntimeContextMetaInfo();
+        ConfigurableApplicationContext context = mock(ConfigurableApplicationContext.class);
+        ConfigurableListableBeanFactory beanFactory = mock(ConfigurableListableBeanFactory.class);
+        when(context.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
+        when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
+        when(beanFactory.getSingleton(TestManager.METAINFO_BEAN_NAME)).thenReturn(metaInfo);
+
+        return context;
     }
 
     @Test
@@ -63,14 +76,8 @@ public class RefreshContextTestEventListenerTests {
         Object dummyTestInstance = new Object();
 
         // prepare test manager
-        TestManager testManager = mock(TestManager.class);
-        ConfigurableApplicationContext mockRuntimeAppCtx = mock(ConfigurableApplicationContext.class);
-        when(testManager.createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class))).thenReturn(mockRuntimeAppCtx);
-
-        ConfigurableApplicationContext context = mock(ConfigurableApplicationContext.class);
-        ConfigurableListableBeanFactory beanFactory = mock(ConfigurableListableBeanFactory.class);
-        when(context.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
-        when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
+        TestManager testManager = getMockTestManager(dummyTestInstance);
+        ConfigurableApplicationContext context = getMockContext(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
         status.setTestClass(DummyTest.class); // dummy test class
@@ -90,7 +97,7 @@ public class RefreshContextTestEventListenerTests {
 
         // verify refresh logic for runtime-context is called
         verify(context).close();
-        verify(testManager).createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class));
+        verify(testManager).createRuntimeContext(eq(dummyTestInstance), any(RuntimeContextMetaInfo.TestType.class));
     }
 
     @Test
@@ -106,14 +113,9 @@ public class RefreshContextTestEventListenerTests {
         Object dummyTestInstance = new Object();
 
         // test manager
-        TestManager testManager = mock(TestManager.class);
-        ConfigurableApplicationContext mockRuntimeAppCtx = mock(ConfigurableApplicationContext.class);
-        when(testManager.createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class))).thenReturn(mockRuntimeAppCtx);
+        TestManager testManager = getMockTestManager(dummyTestInstance);
+        ConfigurableApplicationContext context = getMockContext(dummyTestInstance);
 
-        ConfigurableApplicationContext context = mock(ConfigurableApplicationContext.class);
-        ConfigurableListableBeanFactory beanFactory = mock(ConfigurableListableBeanFactory.class);
-        when(context.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
-        when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
         status.setTestClass(DummyTest.class); // dummy test class
@@ -131,7 +133,7 @@ public class RefreshContextTestEventListenerTests {
 
         // verify refresh logic for runtime-context is called
         verify(context).close();
-        verify(testManager).createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class));
+        verify(testManager).createRuntimeContext(eq(dummyTestInstance), any(RuntimeContextMetaInfo.TestType.class));
     }
 
     @Test
@@ -147,14 +149,9 @@ public class RefreshContextTestEventListenerTests {
         Object dummyTestInstance = new Object();
 
         // test manager
-        TestManager testManager = mock(TestManager.class);
-        ConfigurableApplicationContext mockRuntimeAppCtx = mock(ConfigurableApplicationContext.class);
-        when(testManager.createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class))).thenReturn(mockRuntimeAppCtx);
+        TestManager testManager = getMockTestManager(dummyTestInstance);
+        ConfigurableApplicationContext context = getMockContext(dummyTestInstance);
 
-        ConfigurableApplicationContext context = mock(ConfigurableApplicationContext.class);
-        ConfigurableListableBeanFactory beanFactory = mock(ConfigurableListableBeanFactory.class);
-        when(context.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
-        when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
         status.setTestClass(DummyTest.class); // dummy test class
@@ -172,7 +169,7 @@ public class RefreshContextTestEventListenerTests {
 
         // classmode=AFTER_CLASS will be ignored for method level annotation
         verify(context).close();
-        verify(testManager).createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class));
+        verify(testManager).createRuntimeContext(eq(dummyTestInstance), any(RuntimeContextMetaInfo.TestType.class));
     }
 
     @Test
@@ -188,14 +185,9 @@ public class RefreshContextTestEventListenerTests {
         Object dummyTestInstance = new Object();
 
         // test manager
-        TestManager testManager = mock(TestManager.class);
-        ConfigurableApplicationContext mockRuntimeAppCtx = mock(ConfigurableApplicationContext.class);
-        when(testManager.createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class))).thenReturn(mockRuntimeAppCtx);
+        TestManager testManager = getMockTestManager(dummyTestInstance);
+        ConfigurableApplicationContext context = getMockContext(dummyTestInstance);
 
-        ConfigurableApplicationContext context = mock(ConfigurableApplicationContext.class);
-        ConfigurableListableBeanFactory beanFactory = mock(ConfigurableListableBeanFactory.class);
-        when(context.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
-        when(beanFactory.getSingleton(TestManager.RUNTIME_CONTEXT_TESTBEAN_NAME)).thenReturn(dummyTestInstance);
 
         TestEventStatus status = new TestEventStatus();
         status.setTestClass(DummyTest.class); // dummy test class
@@ -213,6 +205,6 @@ public class RefreshContextTestEventListenerTests {
 
         // verify refresh logic for runtime-context is called
         verify(context).close();
-        verify(testManager).createRuntimeContext(dummyTestInstance, any(RuntimeContextMetaInfo.TestType.class));
+        verify(testManager).createRuntimeContext(eq(dummyTestInstance), any(RuntimeContextMetaInfo.TestType.class));
     }
 }
