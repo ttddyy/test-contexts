@@ -10,25 +10,32 @@ public class CloseRuntimeContextTestEventListener extends TestLifecycleEventList
 
     @Override
     protected void onAfterMethod(TestLifecycleEvent event) {
-        final ApplicationContext runtimeContext = event.getApplicationContext();
+        final ApplicationContext context = event.getApplicationContext();
 
         // JUnit create test instance per test method.
         // close runtime context on after method.
+        if (!RuntimeContextUtils.isRuntimeContext(context)) {
+            return;
+        }
 
-        final RuntimeContextMetaInfo metaInfo = (RuntimeContextMetaInfo) ConfiguredContextUtils.getMetaInfo(runtimeContext);
-        if (RuntimeContextMetaInfo.TestType.JUNIT4.equals(metaInfo.getTestType())) {
-            RuntimeContextUtils.close(runtimeContext); // close runtime context
+        final RuntimeContextMetaInfo metaInfo = (RuntimeContextMetaInfo) ConfiguredContextUtils.getMetaInfo(context);
+        if (RuntimeContextMetaInfo.TestType.JUNIT4.equals((metaInfo).getTestType())) {
+            RuntimeContextUtils.close(context); // close runtime context
         }
     }
 
     @Override
     protected void onAfterClass(TestLifecycleEvent event) {
-        final ApplicationContext runtimeContext = event.getApplicationContext();
+        final ApplicationContext context = event.getApplicationContext();
+
+        if (!RuntimeContextUtils.isRuntimeContext(context)) {
+            return;
+        }
 
         // close runtime context on after class if TestNG.
-        final RuntimeContextMetaInfo metaInfo = (RuntimeContextMetaInfo) ConfiguredContextUtils.getMetaInfo(runtimeContext);
+        final RuntimeContextMetaInfo metaInfo = (RuntimeContextMetaInfo) ConfiguredContextUtils.getMetaInfo(context);
         if (RuntimeContextMetaInfo.TestType.TESTNG.equals(metaInfo.getTestType())) {
-            RuntimeContextUtils.close(runtimeContext); // close runtime context
+            RuntimeContextUtils.close(context); // close runtime context
         }
     }
 

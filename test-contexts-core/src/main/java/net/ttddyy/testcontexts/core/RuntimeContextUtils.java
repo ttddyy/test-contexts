@@ -89,4 +89,9 @@ public class RuntimeContextUtils {
         }
     }
 
+    public static boolean isRuntimeContext(ApplicationContext context) {
+        final TestContextMetaInfo metaInfo = ConfiguredContextUtils.getMetaInfo(context);
+        return metaInfo != null && metaInfo instanceof RuntimeContextMetaInfo;
+    }
+
 }
