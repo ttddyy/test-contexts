@@ -1,6 +1,7 @@
 package net.ttddyy.testcontexts.core;
 
-import net.ttddyy.testcontexts.core.listener.CloseContextTestEventListener;
+import net.ttddyy.testcontexts.core.listener.CloseConfiguredContextTestEventListener;
+import net.ttddyy.testcontexts.core.listener.CloseRuntimeContextTestEventListener;
 import net.ttddyy.testcontexts.core.listener.RefreshContextTestEventListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -42,12 +43,17 @@ public class TestManagerBootStrap {
         }
 
         @Bean
-        public CloseContextTestEventListener closeContextTestEventListener(){
-            return new CloseContextTestEventListener();
+        public CloseConfiguredContextTestEventListener closeConfiguredContextTestEventListener() {
+            return new CloseConfiguredContextTestEventListener();
         }
 
         @Bean
-        public RefreshContextTestEventListener refreshContextTestEventListener(){
+        public CloseRuntimeContextTestEventListener closeRuntimeContextTestEventListener() {
+            return new CloseRuntimeContextTestEventListener();
+        }
+
+        @Bean
+        public RefreshContextTestEventListener refreshContextTestEventListener() {
             return new RefreshContextTestEventListener();
         }
     }

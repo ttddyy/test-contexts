@@ -1,8 +1,10 @@
 package net.ttddyy.testcontexts.core.listener;
 
-import net.ttddyy.testcontexts.core.*;
+import net.ttddyy.testcontexts.core.ConfiguredContextUtils;
+import net.ttddyy.testcontexts.core.TestLifecycleEvent;
+import net.ttddyy.testcontexts.core.TestLifecycleEventListenerAdapter;
+import net.ttddyy.testcontexts.core.TestManager;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import javax.annotation.Resource;
@@ -12,14 +14,13 @@ import javax.annotation.Resource;
  *
  * @author Tadaya Tsuyukubo
  */
-public class CloseContextTestEventListener extends TestLifecycleEventListenerAdapter {
+public class CloseConfiguredContextTestEventListener extends TestLifecycleEventListenerAdapter {
 
     private TestManager testManager;
 
 
     @Override
     protected void onAfterClass(TestLifecycleEvent event) {
-        final ApplicationContext runtimeContext = event.getApplicationContext();
         final Class<?> testClass = event.getEventStatus().getTestClass();
 
         final CloseContext closeContext = AnnotationUtils.findAnnotation(testClass, CloseContext.class);
@@ -32,9 +33,6 @@ public class CloseContextTestEventListener extends TestLifecycleEventListenerAda
             final ApplicationContext applicationContext = testManager.getConfiguredContext(contextName);
             ConfiguredContextUtils.close(applicationContext);
         }
-
-        // close runtime context
-        RuntimeContextUtils.close(runtimeContext);
 
     }
 

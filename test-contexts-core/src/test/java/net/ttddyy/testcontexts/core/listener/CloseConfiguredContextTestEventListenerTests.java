@@ -15,15 +15,15 @@ import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for CloseContextTestEventListener.
+ * Unit tests for CloseConfiguredContextTestEventListener.
  *
  * @author Tadaya Tsuyukubo
  */
-public class CloseContextTestEventListenerTests {
+public class CloseConfiguredContextTestEventListenerTests {
 
     @Test
     public void testAnnotationOnly() {
-        CloseContextTestEventListener listener = new CloseContextTestEventListener();
+        CloseConfiguredContextTestEventListener listener = new CloseConfiguredContextTestEventListener();
 
         @CloseContext
         class DummyTest {
@@ -47,7 +47,7 @@ public class CloseContextTestEventListenerTests {
     @Test
     public void testWithContextNames() {
 
-        CloseContextTestEventListener listener = new CloseContextTestEventListener();
+        CloseConfiguredContextTestEventListener listener = new CloseConfiguredContextTestEventListener();
 
         @CloseContext(contexts = {"foo", "bar"})
         class DummyTestWithContextNames {

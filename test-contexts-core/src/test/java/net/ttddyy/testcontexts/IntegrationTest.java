@@ -1,7 +1,7 @@
 package net.ttddyy.testcontexts;
 
 import net.ttddyy.testcontexts.core.*;
-import net.ttddyy.testcontexts.core.listener.CloseContextTestEventListener;
+import net.ttddyy.testcontexts.core.listener.CloseConfiguredContextTestEventListener;
 import net.ttddyy.testcontexts.core.suport.testng.AbstractTestNGSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author Tadaya Tsuyukubo
  */
-@TestConfig(context = "contextBar", listeners = CloseContextTestEventListener.class)
+@TestConfig(context = "contextBar", listeners = CloseConfiguredContextTestEventListener.class)
 public class IntegrationTest extends AbstractTestNGSupport {
 
     @Resource
