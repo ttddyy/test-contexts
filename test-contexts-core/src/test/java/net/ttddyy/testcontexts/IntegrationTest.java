@@ -1,6 +1,9 @@
 package net.ttddyy.testcontexts;
 
-import net.ttddyy.testcontexts.core.*;
+import net.ttddyy.testcontexts.core.ConfiguredContext;
+import net.ttddyy.testcontexts.core.ConfiguredContextDefinition;
+import net.ttddyy.testcontexts.core.TestConfig;
+import net.ttddyy.testcontexts.core.TestUtils;
 import net.ttddyy.testcontexts.core.listener.CloseConfiguredContextTestEventListener;
 import net.ttddyy.testcontexts.core.suport.testng.AbstractTestNGSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.testng.annotations.Test;
 
 import javax.annotation.Resource;
-
-import static org.testng.Assert.assertEquals;
 
 /**
  * @author Tadaya Tsuyukubo
@@ -38,10 +39,7 @@ public class IntegrationTest extends AbstractTestNGSupport {
 
     @Test
     public void test() {
-        TestManager contextManager = TestManagerHolder.get();
-        if (contextManager != null) {
-            contextManager.clear();
-        }
+        TestUtils.clearContextManager();
 
 //        assertEquals(foo, "FOO-BAR");
 //        assertEquals(bar, "BAR");

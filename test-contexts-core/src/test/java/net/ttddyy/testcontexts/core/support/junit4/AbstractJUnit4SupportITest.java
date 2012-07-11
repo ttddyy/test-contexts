@@ -1,9 +1,6 @@
 package net.ttddyy.testcontexts.core.support.junit4;
 
-import net.ttddyy.testcontexts.core.ConfiguredContext;
-import net.ttddyy.testcontexts.core.ConfiguredContextDefinition;
-import net.ttddyy.testcontexts.core.SpecifyContextDefinitionClasses;
-import net.ttddyy.testcontexts.core.TestConfig;
+import net.ttddyy.testcontexts.core.*;
 import net.ttddyy.testcontexts.core.suport.junit4.AbstractJUnit4Support;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,8 @@ public class AbstractJUnit4SupportITest {
 
     @Test
     public void test() {
+        TestUtils.clearContextManager();
+
         JUnit4Utils.runAndVerify(AbstractJUnit4SupportTestCaseFoo.class, AbstractJUnit4SupportTestCaseBar.class);
         assertThat(isFooFinished, is(true));
         assertThat(isBarFinished, is(true));

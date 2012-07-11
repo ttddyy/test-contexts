@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.TestContextManager;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -20,10 +19,8 @@ public class CloseContextTestEventListenerITest {
 
     @Test
     public void testByTestNG() {
-        TestManager contextManager = TestManagerHolder.get();
-        if (contextManager != null) {
-            contextManager.clear();
-        }
+
+        TestUtils.clearContextManager();
 
         TestNGUtils.runAndVerify(CloseContextTestTestCase.class);
     }

@@ -21,18 +21,11 @@ public class RefreshContextTestEventListenerITest {
     @Test
     public void testWithTestNG() {
 
-        clearContextManager();
+        TestUtils.clearContextManager();
         TestNGUtils.runAndVerify(RefreshContextWithClassAnnotationTestCase.class);
 
-        clearContextManager();
+        TestUtils.clearContextManager();
         TestNGUtils.runAndVerify(RefreshContextWithMethodAnnotationTestCase.class);
-    }
-
-    private void clearContextManager() {
-        TestManager contextManager = TestManagerHolder.get();
-        if (contextManager != null) {
-            contextManager.clear();
-        }
     }
 
 
