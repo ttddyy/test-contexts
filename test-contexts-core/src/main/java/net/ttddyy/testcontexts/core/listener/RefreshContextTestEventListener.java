@@ -47,8 +47,8 @@ public class RefreshContextTestEventListener extends TestLifecycleEventListenerA
 
         final RefreshContext refreshContext = AnnotationUtils.findAnnotation(testClass, RefreshContext.class);
 
-        if (refreshContext == null) {
-            return; // not annotated
+        if (refreshContext == null || refreshContext.classMode() == RefreshContext.ClassMode.AFTER_EACH_TEST_METHOD) {
+            return; // not annotated, or annotated but specified after method
         }
 
         doRefresh(runtimeContext, refreshContext);
