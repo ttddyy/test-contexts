@@ -12,6 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * Parent class for TestNG classes.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class AbstractTestNGSupport implements ApplicationContextAware {

@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationListener;
 import java.lang.reflect.Method;
 
 /**
+ * Internal representation of {@link ConfiguredContext}.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class ParsedConfiguredContextDefinition {
@@ -22,7 +24,7 @@ public class ParsedConfiguredContextDefinition {
 
     private ContextCreationStrategy contextCreation;
     private Class<?>[] definitionClasses = new Class[0]; // set BY_ANNOTATED_CLASS
-    private String[] definitionFiles= new String[0];  // set BY_CONFIG_FILE
+    private String[] definitionFiles = new String[0];  // set BY_CONFIG_FILE
     private Method definitionMethod; // set BY_METHOD_INVOCATION
 
     private int order;

@@ -1,6 +1,8 @@
 package net.ttddyy.testcontexts.core;
 
 /**
+ * Meta information holder for runtime-contexts.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class RuntimeContextMetaInfo extends TestContextMetaInfo {

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Parse the annotated {@link ConfiguredContext} and convert to internal representation.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class ConfiguredContextDefinitionParser {

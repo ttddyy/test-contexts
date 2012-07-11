@@ -10,7 +10,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import javax.annotation.Resource;
 
 /**
- * Close runtime-context and specified configured-contexts at the end of the annotated test class.
+ * Close specified configured-contexts at the end of the annotated test class.
  *
  * @author Tadaya Tsuyukubo
  */

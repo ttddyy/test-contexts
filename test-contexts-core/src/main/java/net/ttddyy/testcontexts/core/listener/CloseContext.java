@@ -3,6 +3,8 @@ package net.ttddyy.testcontexts.core.listener;
 import java.lang.annotation.*;
 
 /**
+ * Annotation for closing configured-contexts on after class.
+ *
  * @author Tadaya Tsuyukubo
  */
 @Documented
@@ -11,6 +13,11 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 public @interface CloseContext {
 
+    /**
+     * Configured-context names
+     *
+     * @return configured-context names
+     */
     String[] contexts() default {};
 
 }

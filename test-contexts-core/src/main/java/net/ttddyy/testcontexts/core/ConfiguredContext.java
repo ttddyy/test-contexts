@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationListener;
 import java.lang.annotation.*;
 
 /**
+ * Describe the configured-context attributes.
+ *
  * @author Tadaya Tsuyukubo
  */
 @Documented
@@ -51,7 +53,7 @@ public @interface ConfiguredContext {
     /**
      * Test listeners
      *
-     * @return test listners
+     * @return test listeners
      */
     Class<? extends ApplicationListener<? extends TestLifecycleEvent>>[] listeners() default {};
 

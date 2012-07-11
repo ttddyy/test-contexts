@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Method;
 
 /**
+ * JUnit rules for {@link AbstractJUnit4Support} and {@link TestContextsJUnit4Rules}.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class TestContextsJUnit4Rules {

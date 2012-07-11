@@ -4,6 +4,10 @@ import net.ttddyy.testcontexts.core.*;
 import org.springframework.context.ApplicationContext;
 
 /**
+ * Close runtime-context.
+ * For junit, close runtime-context on after method.
+ * For testng, close runtime-context on after class.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class CloseRuntimeContextTestEventListener extends TestLifecycleEventListenerAdapter {

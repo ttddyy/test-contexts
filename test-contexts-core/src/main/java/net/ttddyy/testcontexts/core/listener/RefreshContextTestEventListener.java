@@ -10,6 +10,10 @@ import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 /**
+ * Event listener to refresh specified runtime/configured context(s).
+ *
+ * TODO: refresh configured-contexts as well.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class RefreshContextTestEventListener extends TestLifecycleEventListenerAdapter {

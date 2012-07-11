@@ -15,6 +15,8 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 /**
+ * Default {@link TestManager} implementation.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class DefaultTestManager implements TestManager, ApplicationContextAware {
