@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Bootstrap class for the test-contexts framework.
+ * <p/>
+ * create the framework-context(root-context), and set the {@link TestManager} to the {@link TestManagerHolder}.
+ *
  * @author Tadaya Tsuyukubo
  */
 public class TestManagerBootStrap {
@@ -24,7 +28,9 @@ public class TestManagerBootStrap {
     }
 
     /**
-     * Framework Context(Root) application context definition.
+     * Framework Context(Root) definition.
+     * <p/>
+     * Java based spring application context definition.
      */
     @Configuration
     public static class FrameworkContextConfiguration {

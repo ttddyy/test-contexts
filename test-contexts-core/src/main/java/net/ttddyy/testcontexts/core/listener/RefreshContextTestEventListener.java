@@ -10,9 +10,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 /**
- * Event listener to refresh specified runtime/configured context(s).
- *
- * TODO: refresh configured-contexts as well.
+ * Event listener to refresh specified configured-contexts and the runtime-context.
  *
  * @author Tadaya Tsuyukubo
  */
