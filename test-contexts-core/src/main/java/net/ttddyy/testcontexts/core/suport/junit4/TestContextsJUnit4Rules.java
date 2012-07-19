@@ -5,6 +5,7 @@ import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
@@ -34,7 +35,7 @@ public class TestContextsJUnit4Rules {
                     return base;
                 }
 
-                // initialize TestManger
+                // initialize TestManager
                 synchronized (TestManagerHolder.class) {
 
                     TestManager testManager = TestManagerHolder.get();
@@ -114,7 +115,13 @@ public class TestContextsJUnit4Rules {
 
             private void publishEvent(Description description, TestLifecycleEventType eventType) {
                 final Class<?> testClass = description.getTestClass();
-                final String testMethodName = description.getMethodName();
+
+                // for parameterized test, method name ends with index
+                //   example: "method[0]", "method[1]"
+                String testMethodName = description.getMethodName();
+                if (PropertyAccessorUtils.isNestedOrIndexedProperty(testMethodName)) {
+                    testMethodName = PropertyAccessorUtils.getPropertyName(testMethodName);
+                }
                 final Method testMethod = ReflectionUtils.findMethod(testClass, testMethodName);
 
                 final TestManager testManager = TestManagerHolder.get();
