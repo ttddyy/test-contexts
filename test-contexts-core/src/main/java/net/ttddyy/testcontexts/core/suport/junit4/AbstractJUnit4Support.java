@@ -1,6 +1,7 @@
 package net.ttddyy.testcontexts.core.suport.junit4;
 
 import net.ttddyy.testcontexts.core.SpecifyContextDefinitionClasses;
+import net.ttddyy.testcontexts.core.TestManagerHolder;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
@@ -9,8 +10,12 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import java.util.Set;
+
 /**
  * Parent class for junit test classes.
+ * <p/>
+ * Child class needs to specify context definition classes using {@link @SpecifyContextDefinitionClasses} annotation.
  *
  * @author Tadaya Tsuyukubo
  */
@@ -18,27 +23,19 @@ import org.springframework.core.annotation.AnnotationUtils;
 public abstract class AbstractJUnit4Support {
 
     @ClassRule
-    public static TestRule CLASS_RULE;
+    public static TestRule classRule = new TestContextsJUnit4SupportClassRule(new TestContextsJUnit4SupportClassRule.ContextDefinitionRetrievalStrategy() {
+
+        // runtime evaluation to retrieve context definition classes from @SpecifyContextDefinitionClasses annotation
+        @Override
+        public Class<?>[] getClasses(Statement base, Description description) {
+            final SpecifyContextDefinitionClasses annotation =
+                    AnnotationUtils.findAnnotation(description.getTestClass(), SpecifyContextDefinitionClasses.class);
+            return annotation.classes();
+        }
+    });
 
     @Rule
-    public TestRule methodRule = TestContextsJUnit4Rules.createMethodRule(this);
+    public TestRule methodRule = new TestContextsJUnit4SupportMethodRule(this);
 
-    static {
-        final TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy strategy = new TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy() {
-            @Override
-            public Class<?>[] getClasses(Statement base, Description description) {
-
-                final SpecifyContextDefinitionClasses annotation =
-                        AnnotationUtils.findAnnotation(description.getTestClass(), SpecifyContextDefinitionClasses.class);
-                return annotation.classes();
-            }
-        };
-
-        final TestRule initializeRule = TestContextsJUnit4Rules.getInitializeRule(strategy);
-        final TestRule classWatcherRule = TestContextsJUnit4Rules.CLASS_RULE;
-
-        // ordered rule
-        CLASS_RULE = RuleChain.outerRule(initializeRule).around(classWatcherRule);
-    }
 
 }

@@ -171,4 +171,117 @@ AbstractTestNGSupport class
 
 # JUnit4 Integration
 
-...
+## Use Inheritance
+
+**AbstractJUnit4Support class**
+
+Create a class that inherits AbstractJUnit4Support class with @SpecifyContextDefinitionClasses annotation to specify @ConfiguredContextDefinition classes.
+
+````java
+@SpecifyContextDefinitionClasses(classes = MyConfiguredContexts.class)
+public abstract class MyJUnitParentTestSupport extends AbstractJUnit4Support {
+   ...
+}
+
+@TestConfig(context = "foo")
+public class FooTest extends MyJUnitParentTestSupport {
+   ...
+}
+@TestConfig(context = "bar")
+public class BarTest extends MyJUnitParentTestSupport {
+   ...
+}
+
+````
+
+## Use Runner
+
+**TestContextsJUnit4ClassRunner class**
+
+Create a test runner class that inherits TestContextsJUnit4ClassRunner class.
+In your custom class runner, you will specify @ConfiguredContextDefinition classes, and each test class uses your custom runner on @RunWith annotation.
+
+
+````java
+public class MyJUnitRunner extends TestContextsJUnit4ClassRunner {
+
+    public MyJUnitRunner(Class<?> klass) throws InitializationError {
+        super(klass);
+    }
+
+    @Override
+    public Set<Class<?>> getConfigurationDefinitionClasses() {
+        Set<Class<?>> configs = new HashSet<Class<?>>();
+        configs.add(MyConfiguredContexts.class);
+        return configs;
+    }
+}
+
+@RunWith(MyJUnitRunner.class)
+@TestConfig(context = "foo")
+public class FooTest {
+   ...
+}
+
+@RunWith(MyJUnitRunner.class)
+@TestConfig(context = "bar")
+public class BarTest {
+   ...
+}
+
+
+````
+
+## Use Rules
+
+**TestContextsJUnit4SupportClassRule class**
+**TestContextsJUnit4SupportMethodRule class**
+
+Assign TestContextsJUnit4SupportClassRule as a class rule(@ClassRule annotation to static variable), and TestContextsJUnit4SupportMethodRule as a method rule(@Rule annotation).
+
+
+Specify in test class directly:
+
+````java
+
+@TestConfig(context = "foo")
+public class FooTest {
+
+    @ClassRule
+    public static TestRule classRule = new TestContextsJUnit4SupportClassRule(MyConfiguredContexts.class);
+
+    @Rule
+    public TestRule methodRule = new TestContextsJUnit4SupportMethodRule(this);
+
+    // tests
+    ...
+}
+
+````
+
+Create parent class:
+
+````java
+
+public abstract class MyJUnitParentTestSupport {
+
+    @ClassRule
+    public static TestRule classRule = new TestContextsJUnit4SupportClassRule(MyConfiguredContexts.class);
+
+    @Rule
+    public TestRule methodRule = new TestContextsJUnit4SupportMethodRule(this);
+
+    ...
+}
+
+@TestConfig(context = "foo")
+public class FooTest extends MyJUnitParentTestSupport {
+   ...
+}
+@TestConfig(context = "bar")
+public class BarTest extends MyJUnitParentTestSupport {
+   ...
+}
+
+
+````

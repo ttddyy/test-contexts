@@ -1,5 +1,6 @@
 package net.ttddyy.testcontexts.core.suport.junit4;
 
+import net.ttddyy.testcontexts.core.TestManagerHolder;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -25,27 +26,17 @@ public abstract class TestContextsJUnit4ClassRunner extends BlockJUnit4ClassRunn
     @Override
     protected List<TestRule> classRules() {
 
-        final TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy strategy = new TestContextsJUnit4Rules.ContextDefinitionRetrievalStrategy() {
-            @Override
-            public Class<?>[] getClasses(Statement base, Description description) {
-                final Set<Class<?>> classes = getConfigurationDefinitionClasses();
-                return classes.toArray(new Class<?>[classes.size()]);
-            }
-        };
-
-        final TestRule initializationRule = TestContextsJUnit4Rules.getInitializeRule(strategy);
-
+        final TestRule classRule = new TestContextsJUnit4SupportClassRule(getConfigurationDefinitionClasses());
 
         final List<TestRule> rules = super.classRules();
-        rules.add(0, initializationRule);
-        rules.add(0, TestContextsJUnit4Rules.CLASS_RULE);
+        rules.add(0, classRule);
         return rules;
     }
 
     @Override
     protected List<TestRule> getTestRules(Object target) {
         final List<TestRule> rules = super.getTestRules(target);
-        rules.add(TestContextsJUnit4Rules.createMethodRule(target));
+        rules.add(new TestContextsJUnit4SupportMethodRule(target));
         return rules;
     }
 
